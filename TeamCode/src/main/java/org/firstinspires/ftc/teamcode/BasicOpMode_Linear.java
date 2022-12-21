@@ -116,6 +116,82 @@ public class BasicOpMode_Linear extends LinearOpMode {
         motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
+    private void StrafeInchesRight(double inches, double power) {
+        final int ticksToDrive = (int) (inches * TICKS_PER_INCH);
+
+        motorBackLeft.setTargetPosition(motorBackLeft.getCurrentPosition() + ticksToDrive);
+        motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorBackLeft.setPower(power);
+
+
+        motorBackRight.setTargetPosition(motorBackRight.getCurrentPosition() - ticksToDrive);
+        motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorBackRight.setPower(power);
+
+
+        motorFrontLeft.setTargetPosition(motorFrontLeft.getCurrentPosition() - ticksToDrive);
+        motorFrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorFrontLeft.setPower(power);
+
+
+        motorFrontRight.setTargetPosition(motorFrontRight.getCurrentPosition() + ticksToDrive);
+        motorFrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorFrontRight.setPower(power);
+
+
+        while(opModeIsActive() && motorBackLeft.isBusy() || motorBackRight.isBusy() || motorFrontLeft.isBusy() || motorFrontRight.isBusy());
+
+        motorFrontRight.setPower(0);
+        motorFrontLeft.setPower(0);
+        motorBackLeft.setPower(0);
+        motorBackRight.setPower(0);
+
+        motorFrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
+
+
+    private void StrafeInchesLeft(double inches, double power) {
+        final int ticksToDrive = (int) (inches * TICKS_PER_INCH);
+
+        motorBackLeft.setTargetPosition(motorBackLeft.getCurrentPosition() - ticksToDrive);
+        motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorBackLeft.setPower(power);
+
+
+        motorBackRight.setTargetPosition(motorBackRight.getCurrentPosition() + ticksToDrive);
+        motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorBackRight.setPower(power);
+
+
+        motorFrontLeft.setTargetPosition(motorFrontLeft.getCurrentPosition() + ticksToDrive);
+        motorFrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorFrontLeft.setPower(power);
+
+
+        motorFrontRight.setTargetPosition(motorFrontRight.getCurrentPosition() - ticksToDrive);
+        motorFrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorFrontRight.setPower(power);
+
+
+        while(opModeIsActive() && motorBackLeft.isBusy() || motorBackRight.isBusy() || motorFrontLeft.isBusy() || motorFrontRight.isBusy());
+
+        motorFrontRight.setPower(0);
+        motorFrontLeft.setPower(0);
+        motorBackLeft.setPower(0);
+        motorBackRight.setPower(0);
+
+        motorFrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
+
+
+
+
 
     @Override
     public void runOpMode() {
@@ -138,10 +214,12 @@ public class BasicOpMode_Linear extends LinearOpMode {
 
 
         waitForStart();
-        DriveInches(10,1);
+        StrafeInchesRight(10,1);
+        Waitmilli(2000);
+        StrafeInchesLeft(10,1);
 
         
-       
+
 
 
 
