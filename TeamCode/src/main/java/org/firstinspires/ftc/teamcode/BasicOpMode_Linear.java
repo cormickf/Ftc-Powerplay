@@ -34,6 +34,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
@@ -57,15 +58,16 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 @Autonomous(name="Basic: Linear OpMode", group="Linear Opmode")
 
 public class BasicOpMode_Linear extends LinearOpMode {
-    DistanceSensor distance;
-    DistanceSensor distance2;
+
 
     private static final double WHEEL_CIRCUMFERENCE = 3.5433 * Math.PI;
-    public static  final double TICKS_PER_INCH = 288 / WHEEL_CIRCUMFERENCE;
+    public static  final double TICKS_PER_INCH = 560 / WHEEL_CIRCUMFERENCE;
     private static final int Turn_Time_90 = 1265;
 
-    private DcMotor leftDrive = null;
-    private DcMotor rightDrive = null;
+    private DcMotor motorFrontLeft = null;
+    private DcMotor motorFrontRight = null;
+    private DcMotor motorBackRight = null;
+    private DcMotor motorBackLeft = null;
 
 
     private void Waitmilli(int milli){
@@ -81,77 +83,65 @@ public class BasicOpMode_Linear extends LinearOpMode {
     private void DriveInches(double inches, double power) {
         final int ticksToDrive = (int) (inches * TICKS_PER_INCH);
 
-        leftDrive.setTargetPosition(leftDrive.getCurrentPosition() + ticksToDrive);
-        leftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        leftDrive.setPower(power);
+        motorBackLeft.setTargetPosition(motorBackLeft.getCurrentPosition() + ticksToDrive);
+        motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorBackLeft.setPower(power);
 
 
+        motorBackRight.setTargetPosition(motorBackRight.getCurrentPosition() + ticksToDrive);
+        motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorBackRight.setPower(power);
 
-        rightDrive.setTargetPosition(rightDrive.getCurrentPosition() + ticksToDrive);
-        rightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        rightDrive.setPower(power);
+
+        motorFrontLeft.setTargetPosition(motorFrontLeft.getCurrentPosition() + ticksToDrive);
+        motorFrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorFrontLeft.setPower(power);
 
 
-        while(opModeIsActive() && leftDrive.isBusy() || rightDrive.isBusy());
+        motorFrontRight.setTargetPosition(motorFrontRight.getCurrentPosition() + ticksToDrive);
+        motorFrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorFrontRight.setPower(power);
 
-        rightDrive.setPower(0);
-        leftDrive.setPower(0);
 
-        leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        while(opModeIsActive() && motorBackLeft.isBusy() || motorBackRight.isBusy() || motorFrontLeft.isBusy() || motorFrontRight.isBusy());
 
+        motorFrontRight.setPower(0);
+        motorFrontLeft.setPower(0);
+        motorBackLeft.setPower(0);
+        motorBackRight.setPower(0);
+
+        motorFrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
 
     @Override
     public void runOpMode() {
 
+        motorFrontLeft = hardwareMap.dcMotor.get("motorFrontLeft");
+        motorBackLeft = hardwareMap.dcMotor.get("motorBackLeft");
+        motorFrontRight = hardwareMap.dcMotor.get("motorFrontRight");
+        motorBackRight = hardwareMap.dcMotor.get("motorBackRight");
 
-        leftDrive  = hardwareMap.get(DcMotor.class, "left");
-        rightDrive = hardwareMap.get(DcMotor.class, "right");
-        distance = hardwareMap.get(DistanceSensor.class, "Color");
-        distance2 = hardwareMap.get(DistanceSensor.class, "Color2");
+        motorBackRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorBackLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorFrontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorFrontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        leftDrive.setDirection(DcMotor.Direction.REVERSE);
-        rightDrive.setDirection(DcMotor.Direction.FORWARD);
+        motorFrontRight.setDirection(DcMotorSimple.Direction.REVERSE);
+        motorBackRight.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        leftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+
+
 
         waitForStart();
+        DriveInches(10,1);
 
-        leftDrive.setPower(1);
-        rightDrive.setPower(1);
-
-        while(opModeIsActive()){
-            if(distance.getDistance(DistanceUnit.MM) <= 100){
-                rightDrive.setPower(0);
-                leftDrive.setPower(0);
-                Waitmilli(1000);
-                DriveInches(-12,1);
-                Waitmilli(1000);
-                leftDrive.setPower(0);
-                rightDrive.setPower(-1);
-                Waitmilli(100);
-                rightDrive.setPower(1);
-                leftDrive.setPower(1);
-            }
-            if(distance2.getDistance(DistanceUnit.MM) <= 40){
-                rightDrive.setPower(0);
-                leftDrive.setPower(0);
-                Waitmilli(1000);
-                DriveInches(12,1);
-                Waitmilli(1000);
-                leftDrive.setPower(0);
-                rightDrive.setPower(1);
-                Waitmilli(100);
-                rightDrive.setPower(1);
-                leftDrive.setPower(1);
-
-            }
-
-
-        }
+        
+       
 
 
 
