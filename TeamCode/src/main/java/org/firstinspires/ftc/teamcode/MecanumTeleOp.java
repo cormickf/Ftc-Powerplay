@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
 @TeleOp(name="Mecanum Teleop")
@@ -21,6 +22,7 @@ public class MecanumTeleOp extends LinearOpMode {
     public boolean fastMode;
     private boolean slowMode;
 
+    private Servo claw;
 
 
     @Override
@@ -35,6 +37,7 @@ public class MecanumTeleOp extends LinearOpMode {
         DcMotor motorBackLeft = hardwareMap.dcMotor.get("motorBackLeft");
         DcMotor motorFrontRight = hardwareMap.dcMotor.get("motorFrontRight");
         DcMotor motorBackRight = hardwareMap.dcMotor.get("motorBackRight");
+        claw = hardwareMap.servo.get("Claw");
 
         motorBackRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motorBackLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -118,6 +121,18 @@ public class MecanumTeleOp extends LinearOpMode {
                     slowMode = !slowMode;
 
                 break;
+
+            case FtcGamePad.GAMEPAD_DPAD_RIGHT:
+                if(pressed){
+                    claw.setPosition(2);
+                }
+
+                break;
+            case FtcGamePad.GAMEPAD_DPAD_LEFT:
+                if(pressed){
+                    claw.setPosition(0);
+                }
+
 
 
 
