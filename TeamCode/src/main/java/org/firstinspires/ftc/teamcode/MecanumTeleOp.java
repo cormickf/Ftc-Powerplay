@@ -22,6 +22,8 @@ public class MecanumTeleOp extends LinearOpMode {
     public boolean fastMode;
     private boolean slowMode;
 
+    private double offsetHeading = 0;
+
 
     private Servo claw;
 
@@ -78,7 +80,7 @@ public class MecanumTeleOp extends LinearOpMode {
             double rx = Range.clip(-Math.pow(gamepad1.right_stick_x, 3), -1.0, 1.0);
 
             // Read inverse IMU heading, as the UMG heading is CW positive
-            double botHeading = -imu.getAngularOrientation().firstAngle + 0;
+            double botHeading = -imu.getAngularOrientation().firstAngle + offsetHeading;
 
             double rotX = x * Math.cos(botHeading) - y * Math.sin(botHeading);
             double rotY = x * Math.sin(botHeading) + y * Math.cos(botHeading);
@@ -135,6 +137,12 @@ public class MecanumTeleOp extends LinearOpMode {
                 if(pressed)
                     //closing the claw 12/29/22
                     claw.setPosition(.45);
+                break;
+            case FtcGamePad.GAMEPAD_BACK:
+                if(pressed)
+                    offsetHeading = imu.getAngularOrientation().firstAngle;
+                break;
+
 
 
 

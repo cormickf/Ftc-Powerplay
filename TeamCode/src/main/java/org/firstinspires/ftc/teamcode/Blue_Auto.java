@@ -33,6 +33,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 
@@ -62,6 +63,9 @@ public class Blue_Auto extends LinearOpMode {
     private DcMotor motorFrontRight = null;
     private DcMotor motorBackRight = null;
     private DcMotor motorBackLeft = null;
+
+    private Servo claw;
+
 
 
     private void Waitmilli(int milli){
@@ -205,11 +209,13 @@ public class Blue_Auto extends LinearOpMode {
 
 
 
-
+        claw = hardwareMap.servo.get("Claw");
 
         waitForStart();
+        claw.setPosition(.20);
         DriveInches(-23,.50);
-        StrafeInchesRight(1,.5);
+        claw.setPosition(1);
+
 
 
         
