@@ -115,7 +115,7 @@ public class MecanumTeleOp extends LinearOpMode {
                     fastMode = !fastMode;
                     // turns fast mode on
                 break;
-                
+
             case FtcGamePad.GAMEPAD_B:
 
                 if(pressed)
@@ -144,10 +144,46 @@ public class MecanumTeleOp extends LinearOpMode {
     }
 
     private void OnOperatorGamePadChange(FtcGamePad ftcGamePad, int button, boolean pressed) {
+        double n = 0;
 
+        switch (button) {
+
+            case FtcGamePad.GAMEPAD_DPAD_LEFT:
+                if(pressed)
+                    //opening the claw 12/29/22
+                    claw.setPosition(1);
+                break;
+            case FtcGamePad.GAMEPAD_DPAD_RIGHT:
+                if(pressed)
+                    //closing the claw 12/29/22
+                    claw.setPosition(.45);
+                break;
+            case FtcGamePad.GAMEPAD_X:
+                if(pressed)
+                    claw.setPosition(claw.getPosition() + .10);
+                break;
+
+
+            case FtcGamePad.GAMEPAD_B:
+                if(pressed)
+                    claw.setPosition(claw.getPosition() - .10);
+                break;
+
+
+
+
+
+
+
+
+
+
+
+
+
+        }
+        }
 
 
     }
 
-
-}
