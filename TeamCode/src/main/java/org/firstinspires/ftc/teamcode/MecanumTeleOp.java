@@ -22,6 +22,7 @@ public class MecanumTeleOp extends LinearOpMode {
     public boolean fastMode;
     private boolean slowMode;
 
+
     private Servo claw;
 
 
@@ -92,10 +93,10 @@ public class MecanumTeleOp extends LinearOpMode {
             double backRightPower = (rotY + rotX - rx) / denominator;
 
 
-            motorFrontLeft.setPower(fastMode ? frontLeftPower : frontLeftPower / 2);
-            motorFrontRight.setPower(fastMode ?  frontRightPower : frontRightPower / 2);
-            motorBackLeft.setPower(fastMode ? backLeftPower : backLeftPower / 2);
-            motorBackRight.setPower(fastMode ? backRightPower : backRightPower / 2);
+            motorFrontLeft.setPower(fastMode ? frontLeftPower : slowMode ? frontLeftPower /3 : frontLeftPower / 2);
+            motorFrontRight.setPower(fastMode ?  frontRightPower : slowMode ? frontRightPower /3 : frontRightPower / 2);
+            motorBackLeft.setPower(fastMode ? backLeftPower : slowMode ? backLeftPower /3 : backLeftPower / 2);
+            motorBackRight.setPower(fastMode ? backRightPower : slowMode ? backRightPower /3 : backRightPower / 2 );
 
 
             driverGamePad.update();
@@ -114,6 +115,7 @@ public class MecanumTeleOp extends LinearOpMode {
                     fastMode = !fastMode;
                     // turns fast mode on
                 break;
+                
             case FtcGamePad.GAMEPAD_B:
 
                 if(pressed)
