@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 
-// ToDo fix bupers and turning they need to be reversed
+
 
 
 
@@ -71,8 +71,7 @@ public class MecanumTeleOp extends LinearOpMode {
         if (isStopRequested()) return;
 
         while (opModeIsActive()) {
-            // TODO: Only calculate x and v with math and calculate r from imu so 180 button can be implemented
-            double y = Range.clip(Math.pow(-gamepad1.left_stick_y, 3), -1.0, 1.0);
+            double y = Range.clip(Math.pow(gamepad1.left_stick_y, 3), -1.0, 1.0);
             double xt = Math.pow(gamepad1.right_trigger, 3) - Math.pow(gamepad1.left_trigger, 3);
             double x = -Range.clip(Math.pow(gamepad1.left_stick_x, 3) + xt, -1.0, 1.0) * 1.1;
             double rx = Range.clip(-Math.pow(gamepad1.right_stick_x, 3), -1.0, 1.0);
@@ -113,25 +112,28 @@ public class MecanumTeleOp extends LinearOpMode {
 
                 if(pressed)
                     fastMode = !fastMode;
-
+                    // turns fast mode on
                 break;
             case FtcGamePad.GAMEPAD_B:
 
                 if(pressed)
                     slowMode = !slowMode;
+                //turns fast mode off
 
                 break;
 
             case FtcGamePad.GAMEPAD_DPAD_RIGHT:
-                if(pressed){
-                    claw.setPosition(2);
-                }
+                if(pressed)
+                    //opening the claw 12/29/22
+                    claw.setPosition(1);
+
 
                 break;
             case FtcGamePad.GAMEPAD_DPAD_LEFT:
-                if(pressed){
-                    claw.setPosition(0);
-                }
+                if(pressed)
+                    //closing the claw 12/29/22
+                    claw.setPosition(.45);
+
 
 
 
