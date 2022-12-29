@@ -50,9 +50,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name=" Blue Auto", group="Linear Opmode")
+@Autonomous(name=" Blue Auto Two", group="Linear Opmode")
 
-public class Blue_Auto extends LinearOpMode {
+public class Blue_Auto_Two extends LinearOpMode {
 
 
     private static final double WHEEL_CIRCUMFERENCE = 3.5433 * Math.PI;
@@ -212,10 +212,13 @@ public class Blue_Auto extends LinearOpMode {
         claw = hardwareMap.servo.get("Claw");
 
         waitForStart();
-        StrafeInchesLeft(2,.5);
-        claw.setPosition(.20);
-        DriveInches(-23,.50);
         claw.setPosition(1);
+        DriveInches(-108,.7);
+        StrafeInchesLeft(30,.7);
+        DriveInches(5, .5);
+        claw.setPosition(.25);
+
+
 
 
 

@@ -21,6 +21,8 @@ public class MecanumTeleOp extends LinearOpMode {
     public BNO055IMU imu;
     public boolean fastMode;
     private boolean slowMode;
+    private boolean servoLimit = false;
+
 
     private double offsetHeading = 0;
 
@@ -103,6 +105,9 @@ public class MecanumTeleOp extends LinearOpMode {
 
             driverGamePad.update();
             operatorGamePad.update();
+            if(claw.getPosition() <= .45)
+                servoLimit = true;
+
 
             telemetry.update();
         }
@@ -128,16 +133,18 @@ public class MecanumTeleOp extends LinearOpMode {
 
             case FtcGamePad.GAMEPAD_DPAD_RIGHT:
                 if(pressed)
-                    //opening the claw 12/29/22
+                    //closes the claw 12/29/22
                     claw.setPosition(1);
 
 
                 break;
             case FtcGamePad.GAMEPAD_DPAD_LEFT:
                 if(pressed)
-                    //closing the claw 12/29/22
-                    claw.setPosition(.45);
-                break;
+                        //opens the claw 12/29/22
+                        claw.setPosition(.45);
+                        break;
+
+
             case FtcGamePad.GAMEPAD_BACK:
                 if(pressed)
                     offsetHeading = imu.getAngularOrientation().firstAngle;
@@ -172,10 +179,12 @@ public class MecanumTeleOp extends LinearOpMode {
                 break;
 
 
+
             case FtcGamePad.GAMEPAD_B:
-                if(pressed)
-                    claw.setPosition(claw.getPosition() - .10);
-                break;
+                    if(pressed)
+                        claw.setPosition(claw.getPosition() - .10);
+                    break;
+
 
 
 
@@ -191,7 +200,8 @@ public class MecanumTeleOp extends LinearOpMode {
 
         }
         }
+}
 
 
-    }
+
 
